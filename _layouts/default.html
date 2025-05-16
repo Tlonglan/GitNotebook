@@ -111,13 +111,13 @@
       <div class="updated">🕓 最后更新时间：{{ site.time | date: "%Y-%m-%d %H:%M" }}</div>
       <h2>📚 笔记导航</h2>
       <ul>
-        {% assign notes = site.mynotes | sort: "path" %}
-        {% for note in notes %}
-          {% assign parts = note.path | split: "/" %}
-          {% assign level = parts.size | minus: 1 %}
-          <li style="padding-left: {{ level | times: 1.5 }}em;">
-            <a href="{{ note.url | relative_url }}">{{ note.title | default: note.basename }}</a>
-          </li>
+        {% assign pages_sorted = site.pages | sort: "path" %}
+        {% for page in pages_sorted %}
+          {% unless page.url == "/" %}
+            <li>
+              <a href="{{ page.url | relative_url }}">{{ page.title | default: page.basename }}</a>
+            </li>
+          {% endunless %}
         {% endfor %}
       </ul>
     </nav>
