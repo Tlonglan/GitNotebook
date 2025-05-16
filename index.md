@@ -9,10 +9,10 @@ layout: default
 
 这里是我整理的笔记索引，点击查看详情：
 
-- [心理笔记](/Mynote/笔记库/心理笔记)
+- [心理笔记](/MyNote/笔记库/心理笔记)
 
 <ul>
-  <li><a href="/Mynote/笔记库/物理笔记">物理笔记</a></li>
+  <li><a href="/MyNote/笔记库/物理笔记">物理笔记</a></li>
 </ul>
 
 ---
