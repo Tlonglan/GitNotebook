@@ -1,5 +1,5 @@
 ---
-title: 小蓝的笔记本
+title: 小蓝笔记本的首页
 layout: default
 ---
 
