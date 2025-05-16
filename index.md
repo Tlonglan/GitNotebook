@@ -19,3 +19,10 @@ layout: default
 
 - [ ] 这是个任务
 - [x] 更新测试
+
+
+```mathematica
+Plot[Sin@x, {x, -Pi, Pi}]
+z = 6
+Print[#&@%]
+```
