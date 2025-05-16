@@ -19,7 +19,7 @@ description: 我的个人笔记整理站
 
 
 # 语言和时区
-language: zh-CN
+locale: zh-CN
 timezone: Asia/Shanghai
 
 
