@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{ page.title }} | {{ site.title }}</title>
 
-  <!-- GitHub Markdown 样式，保证文章内容渲染风格统一 -->
+  <!-- GitHub Markdown 样式 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css" />
-
-  <!-- Font Awesome -->
-  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
   <!-- 代码高亮 -->
   <link href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-dark.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/lib/languages/mathematica.min.js"></script>
 
+  <!-- Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
   <style>
-    /* 整体页面基础样式 */
+    /* 基础样式 */
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -25,7 +25,7 @@
       color: #333;
     }
 
-    /* 顶部 banner，优化蓝色渐变背景，降低亮度，增加层次感 */
+    /* 顶部导航 */
     header {
       background: linear-gradient(90deg, #006699, #0088cc, #33aadd);
       color: white;
@@ -33,21 +33,17 @@
       font-size: 3rem;
       font-weight: bold;
       text-align: center;
-      position: relative;
-      user-select: none; /* 防止选中标题 */
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 添加轻微阴影 */
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
-    /* banner 下方的站点描述，浅蓝色文字 */
     header .site-description {
       font-size: 1.2rem;
       font-weight: normal;
       margin-top: 0.3rem;
       color: #cce6ff;
-      user-select: none;
     }
 
-    /* 页面主体容器，使用 Flexbox 使导航和内容并排 */
+    /* 主体布局 */
     main {
       display: flex;
       max-width: 1200px;
@@ -56,43 +52,34 @@
       gap: 2rem;
     }
 
-    /* 侧边导航栏样式 */
+    /* 侧边导航 */
     nav {
-      width: 280px; /* 固定宽度 */
+      width: 280px;
       flex-shrink: 0;
       background: white;
       border-radius: 0.5rem;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       padding: 1rem;
-      height: 80vh; /* 侧边栏高度，允许滚动 */
+      height: 80vh;
       overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      user-select: none; /* 防止误选导航文本 */
     }
 
-    /* 导航标题“笔记导航”样式，增大字号 */
     nav h2 {
-      font-size: 1.5rem; /* 增大字号 */
+      font-size: 1.5rem;
       margin-bottom: 0.25rem;
       border-bottom: 2px solid #007acc;
       padding-bottom: 0.3rem;
       color: #007acc;
-      font-weight: 600; /* 增加字体粗细 */
+      font-weight: 600;
     }
 
-    /* 最后更新时间样式，左对齐，灰色文字 */
     nav .updated {
       font-size: 0.9rem;
       color: #555;
       margin-bottom: 0.4rem;
-      text-align: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    /* 首页按钮样式 */
+    /* 首页按钮 */
     nav .home-link {
       display: inline-block;
       margin-bottom: 0.5rem;
@@ -103,45 +90,38 @@
       transition: all 0.3s;
       font-size: 0.95rem;
       text-align: center;
-      user-select: none;
       width: auto;
-      align-self: flex-start;
     }
     
-    /* 首页按钮普通状态 */
     nav .home-link {
       background-color: #007acc;
       color: white !important;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
     
-    /* 首页按钮悬停效果 */
     nav .home-link:hover {
       background-color: #005580;
       transform: translateY(-1px);
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     }
     
-    /* 首页按钮激活状态 */
     nav .home-link.active {
       background-color: #005580;
       box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
       transform: translateY(1px);
     }
 
-    /* 导航目录列表样式 */
+    /* 导航菜单 */
     nav ul {
       list-style: none;
       padding-left: 0;
       margin: 0;
     }
 
-    /* 一级目录样式 */
     nav .nav-item {
       margin: 0.3rem 0;
     }
 
-    /* 一级目录链接样式 */
     nav .nav-item > a {
       color: #007acc;
       text-decoration: none;
@@ -152,12 +132,10 @@
       font-weight: 500;
     }
 
-    /* 有子菜单的一级目录样式 */
     nav .nav-item.has-children > a {
       cursor: pointer;
     }
 
-    /* 折叠/展开按钮样式 */
     nav .nav-item.has-children > a::before {
       content: '▶';
       display: inline-block;
@@ -167,12 +145,10 @@
       color: #888;
     }
 
-    /* 展开状态的折叠/展开按钮样式 */
     nav .nav-item.expanded > a::before {
       transform: rotate(90deg);
     }
 
-    /* 二级目录容器样式 */
     nav .sub-nav {
       padding-left: 1.5rem;
       overflow: hidden;
@@ -180,13 +156,11 @@
       transition: max-height 0.3s ease-out;
     }
 
-    /* 展开状态的二级目录样式 */
     nav .nav-item.expanded .sub-nav {
       max-height: 1000px;
       transition: max-height 0.5s ease-in;
     }
 
-    /* 二级目录链接样式 */
     nav .sub-nav a {
       color: #555;
       text-decoration: none;
@@ -195,18 +169,16 @@
       padding: 0.2rem 0;
     }
 
-    /* 目录链接悬停效果 */
     nav a:hover {
       text-decoration: underline;
     }
 
-    /* 当前页面高亮 */
     nav a.active {
       color: #005580;
       font-weight: 600;
     }
 
-    /* 文章内容区域样式，白底，圆角，阴影 */
+    /* 文章内容 */
     article {
       flex: 1;
       background: white;
@@ -216,7 +188,7 @@
       min-width: 0;
     }
 
-    /* 代码块样式 */
+    /* 代码块 */
     pre {
       position: relative;
       margin: 1rem 0;
@@ -230,7 +202,6 @@
       line-height: 1.5;
     }
     
-    /* 代码块复制按钮 */
     .copy-btn {
       position: absolute;
       top: 0.5rem;
@@ -245,12 +216,10 @@
       transition: opacity 0.2s ease;
     }
     
-    /* 代码块悬停时显示复制按钮 */
     pre:hover .copy-btn {
       opacity: 1;
     }
     
-    /* 复制成功提示 */
     .copy-success {
       position: absolute;
       top: 0.5rem;
@@ -265,12 +234,10 @@
       pointer-events: none;
     }
     
-    /* 显示复制成功提示 */
     .copy-success.show {
       opacity: 1;
     }
 
-    /* 内联代码样式 */
     code {
       background: #f6f8fa;
       border-radius: 0.3rem;
@@ -278,38 +245,29 @@
       font-size: 0.9em;
     }
 
-    /* 页脚样式 */
+    /* 页脚 */
     footer {
       text-align: center;
       font-size: 0.9rem;
       color: #777;
       margin: 2rem 0 1rem;
-      user-select: none;
     }
   </style>
 </head>
 <body>
-  <!-- 顶部站点标题 -->
   <header>
     {{ site.title }}
     {% if site.description %}
-      <!-- 站点描述，显示在标题下方 -->
       <div class="site-description">{{ site.description }}</div>
     {% endif %}
   </header>
 
   <main>
-    <!-- 侧边导航栏 -->
     <nav>
       <h2>📚 笔记导航</h2>
-
-      <!-- 最后更新时间 -->
       <div class="updated">🕓 最后更新时间：{{ site.time | date: "%Y-%m-%d %H:%M" }}</div>
-
-      <!-- 返回首页按钮，使用JavaScript导航以保持状态 -->
       <a href="javascript:void(0)" class="home-link" title="返回首页" onclick="goHome()">🏠 首页</a>
 
-      <!-- 基于文件路径的导航目录生成，支持二级目录和折叠功能 -->
       <ul id="site-nav">
         {% assign pages_sorted = site.pages | sort: "path" %}
         {% assign root_pages = "" | split: "," %}
@@ -320,20 +278,16 @@
           {% assign ext = page.path | split: '.' | last | downcase %}
           {% assign is_static_resource = false %}
           
-          <!-- 定义不需要显示在导航中的文件类型 -->
           {% assign static_exts = "css,js,json,xml,svg,png,jpg,jpeg,gif,ico,woff,woff2,ttf,eot,map" | split: ',' %}
           {% if static_exts contains ext %}
             {% assign is_static_resource = true %}
           {% endif %}
           
-          <!-- 收集根目录页面和目录 -->
           {% if page.content.size > 10 and is_static_resource == false and page.url != "/" %}
             {% assign parts = page.path | split: '/' %}
             {% if parts.size == 1 %}
-              <!-- 根目录页面 -->
               {% assign root_pages = root_pages | push: page %}
             {% else %}
-              <!-- 子目录 -->
               {% assign dir = parts[0] %}
               {% unless dirs contains dir %}
                 {% assign dirs = dirs | push: dir %}
@@ -356,7 +310,6 @@
           {% assign dir_pages = pages_sorted | where_exp: "page", "page.path contains dir" | where_exp: "page", "page.path != dir" %}
           {% assign has_pages = false %}
           
-          <!-- 检查目录下是否有页面 -->
           {% for page in dir_pages %}
             {% assign parts = page.path | split: '/' %}
             {% if parts.size == 2 %}
@@ -365,7 +318,6 @@
             {% endif %}
           {% endfor %}
           
-          <!-- 如果目录下有页面，则生成导航项 -->
           {% if has_pages %}
             <li class="nav-item has-children {% if page.url contains dir %}expanded{% endif %}">
               <a href="#" class="{% if page.url contains dir %}active{% endif %}">
@@ -389,50 +341,27 @@
       </ul>
     </nav>
 
-    <!-- 文章主体内容，渲染 Markdown -->
     <article class="markdown-body">
       {{ content }}
     </article>
   </main>
 
-  <!-- 页脚版权信息 -->
   <footer>
     &copy; {{ site.time | date: "%Y" }} {{ site.author.name | default: "作者" }}. All rights reserved.
   </footer>
 
-  <!-- 代码高亮和复制功能 -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // 高亮所有代码块
+      // 高亮代码
       hljs.highlightAll();
       
-      // 为所有代码块添加复制按钮
-      const codeBlocks = document.querySelectorAll('pre');
-      codeBlocks.forEach((block, index) => {
-        // 创建复制按钮
-        const copyBtn = document.createElement('div');
-        copyBtn.className = 'copy-btn';
-        copyBtn.innerHTML = '<i class="fa fa-copy"></i> 复制';
-        copyBtn.onclick = function() {
-          copyCode(block.textContent, index);
-        };
-        
-        // 创建复制成功提示
-        const successMsg = document.createElement('div');
-        successMsg.className = 'copy-success';
-        successMsg.textContent = '复制成功!';
-        successMsg.id = `copy-success-${index}`;
-        
-        // 添加到代码块
-        block.appendChild(copyBtn);
-        block.appendChild(successMsg);
-      });
+      // 添加复制按钮
+      addCopyButtons();
       
-      // 从localStorage获取保存的导航状态
+      // 恢复导航状态
       const savedState = localStorage.getItem('navState');
       const navState = savedState ? JSON.parse(savedState) : {};
       
-      // 恢复导航状态
       const navItems = document.querySelectorAll('.nav-item.has-children');
       navItems.forEach(item => {
         const dirName = item.querySelector('a').textContent.trim();
@@ -441,7 +370,7 @@
         }
       });
       
-      // 为每个有子菜单的导航项添加点击事件
+      // 为导航项添加点击事件
       navItems.forEach(item => {
         const link = item.querySelector('a');
         
@@ -450,10 +379,8 @@
             e.preventDefault();
           }
           
-          // 切换折叠状态
           item.classList.toggle('expanded');
           
-          // 保存导航状态
           const dirName = this.textContent.trim();
           navState[dirName] = item.classList.contains('expanded') ? 'expanded' : 'collapsed';
           localStorage.setItem('navState', JSON.stringify(navState));
@@ -468,12 +395,10 @@
         if (link.getAttribute('href') === currentPath) {
           link.classList.add('active');
           
-          // 展开当前页面所在的父菜单
           const parentItem = link.closest('.nav-item');
           if (parentItem) {
             parentItem.classList.add('expanded');
             
-            // 保存展开状态
             const dirName = parentItem.querySelector('a')?.textContent.trim();
             if (dirName) {
               navState[dirName] = 'expanded';
@@ -486,71 +411,30 @@
       // 高亮首页按钮
       if (currentPath === '{{ "/" | relative_url }}') {
         document.querySelector('.home-link').classList.add('active');
-      }
-      
-      // 使用Intersection Observer监听导航项，防止闪烁
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            // 当导航项进入视口时，延迟一小段时间再恢复状态
-            setTimeout(() => {
-              const navItems = document.querySelectorAll('.nav-item.has-children');
-              navItems.forEach(item => {
-                const dirName = item.querySelector('a').textContent.trim();
-                if (navState[dirName] === 'expanded') {
-                  item.classList.add('expanded');
-                }
-              });
-            }, 50);
-          }
-        });
-      }, { threshold: 0.1 });
-      
-      // 开始观察导航容器
-      const navContainer = document.querySelector('nav');
-      if (navContainer) {
-        observer.observe(navContainer);
+      } else {
+        document.querySelector('.home-link').classList.remove('active');
       }
     });
     
-    // 首页按钮导航函数，保存导航状态
+    // 首页按钮导航
     function goHome() {
-      // 保存当前导航状态
-      const navItems = document.querySelectorAll('.nav-item.has-children');
-      const navState = {};
-      
-      navItems.forEach(item => {
-        const dirName = item.querySelector('a').textContent.trim();
-        navState[dirName] = item.classList.contains('expanded') ? 'expanded' : 'collapsed';
-      });
-      
-      localStorage.setItem('navState', JSON.stringify(navState));
-      
-      // 使用pushState避免页面刷新
       history.pushState(null, null, '{{ "/" | relative_url }}');
       loadPage('{{ "/" | relative_url }}');
-      
-      // 高亮首页按钮
       document.querySelector('.home-link').classList.add('active');
     }
     
-    // 页面加载函数，使用fetch实现无刷新导航
+    // 加载页面
     function loadPage(url) {
       fetch(url)
         .then(response => response.text())
         .then(html => {
-          // 提取新页面的内容部分
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, 'text/html');
           const newContent = doc.querySelector('article.markdown-body').innerHTML;
           
-          // 更新内容部分
           document.querySelector('article.markdown-body').innerHTML = newContent;
-          
-          // 更新标题
           document.title = doc.title;
           
-          // 高亮新页面的导航项
           const currentPath = window.location.pathname;
           const links = document.querySelectorAll('#site-nav a');
           
@@ -559,7 +443,6 @@
             if (link.getAttribute('href') === currentPath) {
               link.classList.add('active');
               
-              // 展开当前页面所在的父菜单
               const parentItem = link.closest('.nav-item');
               if (parentItem) {
                 parentItem.classList.add('expanded');
@@ -567,17 +450,13 @@
             }
           });
           
-          // 如果是首页，高亮首页按钮
           if (currentPath === '{{ "/" | relative_url }}') {
             document.querySelector('.home-link').classList.add('active');
           } else {
             document.querySelector('.home-link').classList.remove('active');
           }
           
-          // 重新高亮代码块
           hljs.highlightAll();
-          
-          // 重新添加复制按钮
           addCopyButtons();
         })
         .catch(error => {
@@ -585,13 +464,11 @@
         });
     }
     
-    // 添加复制按钮到代码块
+    // 添加复制按钮
     function addCopyButtons() {
       const codeBlocks = document.querySelectorAll('pre');
       codeBlocks.forEach((block, index) => {
-        // 检查是否已有复制按钮
         if (!block.querySelector('.copy-btn')) {
-          // 创建复制按钮
           const copyBtn = document.createElement('div');
           copyBtn.className = 'copy-btn';
           copyBtn.innerHTML = '<i class="fa fa-copy"></i> 复制';
@@ -599,28 +476,24 @@
             copyCode(block.textContent, index);
           };
           
-          // 创建复制成功提示
           const successMsg = document.createElement('div');
           successMsg.className = 'copy-success';
           successMsg.textContent = '复制成功!';
           successMsg.id = `copy-success-${index}`;
           
-          // 添加到代码块
           block.appendChild(copyBtn);
           block.appendChild(successMsg);
         }
       });
     }
     
-    // 复制代码到剪贴板
+    // 复制代码
     function copyCode(code, index) {
       navigator.clipboard.writeText(code).then(function() {
-        // 显示成功提示
         const successMsg = document.getElementById(`copy-success-${index}`);
         if (successMsg) {
           successMsg.classList.add('show');
           
-          // 3秒后隐藏提示
           setTimeout(() => {
             successMsg.classList.remove('show');
           }, 3000);
@@ -630,19 +503,21 @@
       });
     }
     
-    // 处理浏览器前进/后退按钮
+    // 处理浏览器前进/后退
     window.addEventListener('popstate', function() {
       loadPage(window.location.pathname);
     });
     
-    // 为所有导航链接添加无刷新导航
+    // 导航链接点击事件
     document.addEventListener('click', function(e) {
       if (e.target.tagName === 'A' && e.target.closest('#site-nav')) {
         e.preventDefault();
         const href = e.target.getAttribute('href');
         
         if (href && href !== '#') {
-          // 保存当前导航状态
+          history.pushState(null, null, href);
+          loadPage(href);
+          
           const navItems = document.querySelectorAll('.nav-item.has-children');
           const navState = {};
           
@@ -652,22 +527,9 @@
           });
           
           localStorage.setItem('navState', JSON.stringify(navState));
-          
-          // 使用pushState更新URL
-          history.pushState(null, null, href);
-          
-          // 加载新页面
-          loadPage(href);
-          
-          // 如果是首页，高亮首页按钮
-          if (href === '{{ "/" | relative_url }}') {
-            document.querySelector('.home-link').classList.add('active');
-          } else {
-            document.querySelector('.home-link').classList.remove('active');
-          }
         }
       }
     });
   </script>
 </body>
-</html>
+</html>    
