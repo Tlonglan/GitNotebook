@@ -20,6 +20,8 @@ layout: default
 - [ ] 这是个任务
 - [x] 更新测试
 
+1. 好好<mark>好</mark>
+  2. **不错不错**
 
 ```mathematica
 Plot[Sin@x, {x, -Pi, Pi}]
