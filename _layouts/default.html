@@ -195,8 +195,8 @@
       padding: 1rem;
       overflow: auto;
       border-radius: 0.5rem;
-      background: #1e1e1e;
-      color: #d4d4d4;
+      background: #1e1e1e !important;
+      color: #d4d4d4 !important;
       font-family: 'Fira Code', Consolas, Monaco, 'Courier New', monospace;
       font-size: 0.9rem;
       line-height: 1.5;
@@ -300,7 +300,7 @@
         {% for page in root_pages %}
           <li class="nav-item">
             <a href="{{ page.url | relative_url }}" class="{% if page.url == page.url %}active{% endif %}">
-              {{ page.name | replace: '.md', '' | replace: '-', ' ' | capitalize }}
+              {{ page.title | default: page.name | replace: '.md', '' | replace: '-', ' ' | capitalize }}
             </a>
           </li>
         {% endfor %}
@@ -329,7 +329,7 @@
                   {% if parts.size == 2 %}
                     <li>
                       <a href="{{ page.url | relative_url }}" class="{% if page.url == page.url %}active{% endif %}">
-                        {{ parts[1] | replace: '.md', '' | replace: '-', ' ' | capitalize }}
+                        {{ page.title | default: parts[1] | replace: '.md', '' | replace: '-', ' ' | capitalize }}
                       </a>
                     </li>
                   {% endif %}
@@ -375,9 +375,7 @@
         const link = item.querySelector('a');
         
         link.addEventListener('click', function(e) {
-          if (!this.classList.contains('active')) {
-            e.preventDefault();
-          }
+          e.preventDefault();
           
           item.classList.toggle('expanded');
           
@@ -389,21 +387,19 @@
       
       // 高亮当前页面
       const currentPath = window.location.pathname;
-      const links = document.querySelectorAll('#site-nav a');
+      const links = document.querySelectorAll('#site-nav a:not([href="#"])');
       
       links.forEach(link => {
         if (link.getAttribute('href') === currentPath) {
           link.classList.add('active');
           
-          const parentItem = link.closest('.nav-item');
+          const parentItem = link.closest('.nav-item.has-children');
           if (parentItem) {
             parentItem.classList.add('expanded');
             
-            const dirName = parentItem.querySelector('a')?.textContent.trim();
-            if (dirName) {
-              navState[dirName] = 'expanded';
-              localStorage.setItem('navState', JSON.stringify(navState));
-            }
+            const dirName = parentItem.querySelector('a').textContent.trim();
+            navState[dirName] = 'expanded';
+            localStorage.setItem('navState', JSON.stringify(navState));
           }
         }
       });
@@ -443,7 +439,7 @@
             if (link.getAttribute('href') === currentPath) {
               link.classList.add('active');
               
-              const parentItem = link.closest('.nav-item');
+              const parentItem = link.closest('.nav-item.has-children');
               if (parentItem) {
                 parentItem.classList.add('expanded');
               }
@@ -511,23 +507,27 @@
     // 导航链接点击事件
     document.addEventListener('click', function(e) {
       if (e.target.tagName === 'A' && e.target.closest('#site-nav')) {
-        e.preventDefault();
         const href = e.target.getAttribute('href');
         
-        if (href && href !== '#') {
-          history.pushState(null, null, href);
-          loadPage(href);
-          
-          const navItems = document.querySelectorAll('.nav-item.has-children');
-          const navState = {};
-          
-          navItems.forEach(item => {
-            const dirName = item.querySelector('a').textContent.trim();
-            navState[dirName] = item.classList.contains('expanded') ? 'expanded' : 'collapsed';
-          });
-          
-          localStorage.setItem('navState', JSON.stringify(navState));
+        if (href === '#') {
+          e.preventDefault();
+          return;
         }
+        
+        e.preventDefault();
+        
+        history.pushState(null, null, href);
+        loadPage(href);
+        
+        const navItems = document.querySelectorAll('.nav-item.has-children');
+        const navState = {};
+        
+        navItems.forEach(item => {
+          const dirName = item.querySelector('a').textContent.trim();
+          navState[dirName] = item.classList.contains('expanded') ? 'expanded' : 'collapsed';
+        });
+        
+        localStorage.setItem('navState', JSON.stringify(navState));
       }
     });
   </script>
