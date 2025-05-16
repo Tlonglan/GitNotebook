@@ -1,0 +1,4 @@
+title: 小蓝的笔记本
+description: 我的个人笔记整理站
+theme: minima  # 默认主题，支持目录和美观样式
+markdown: kramdown
