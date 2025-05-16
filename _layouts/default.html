@@ -11,51 +11,64 @@
       background-color: #f5f7fa;
       color: #333;
     }
+
     header {
-      background: linear-gradient(90deg, #007acc, #4da7e8);
+      background: linear-gradient(to right, #007acc, #005fa3); /* 蓝色渐变 */
       color: white;
       padding: 2.5rem 1rem;
       font-size: 3rem;
       font-weight: bold;
       text-align: center;
+      position: relative;
     }
+
     main {
       display: flex;
-      flex-direction: row-reverse; /* 右侧导航 */
+      flex-direction: row; /* 左侧导航 */
       max-width: 1200px;
       margin: 0 auto;
       padding: 1rem;
       gap: 2rem;
     }
+
     nav {
       width: 280px;
       flex-shrink: 0;
     }
+
     nav h2 {
       font-size: 1.3rem;
       margin-bottom: 0.5rem;
       border-bottom: 2px solid #007acc;
       padding-bottom: 0.3rem;
     }
+
     nav .updated {
       font-size: 0.9rem;
       color: #555;
-      margin: 0.2rem 0 0.8rem;
+      margin-bottom: 0.5rem;
       text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+
     nav .home-link {
       display: inline-block;
+      margin: 0.5rem 0 1rem;
       font-size: 1rem;
-      background: #e0f0ff;
-      color: #007acc;
+      background-color: rgba(0, 0, 0, 0.2); /* 加深背景色 */
+      color: white;
       text-decoration: none;
-      padding: 0.3rem 0.6rem;
+      padding: 0.3rem 0.7rem;
       border-radius: 0.3rem;
       transition: background-color 0.3s;
     }
+
     nav .home-link:hover {
-      background: #cbe7ff;
+      background-color: rgba(0, 0, 0, 0.35);
     }
+
     nav ul {
       list-style: none;
       padding-left: 0;
@@ -63,17 +76,21 @@
       overflow-y: auto;
       margin: 0;
     }
+
     nav li {
       margin: 0.3rem 0;
     }
+
     nav li a {
       color: #007acc;
       text-decoration: none;
       font-size: 1rem;
     }
+
     nav li a:hover {
       text-decoration: underline;
     }
+
     article {
       flex: 1;
       background: white;
@@ -82,6 +99,7 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       min-width: 0;
     }
+
     footer {
       text-align: center;
       font-size: 0.9rem;
@@ -93,31 +111,28 @@
 <body>
   <header>
     {{ site.title }}
+    <div style="font-size: 1.2rem; font-weight: normal; margin-top: 0.5rem;">{{ site.description }}</div>
   </header>
-
   <main>
     <nav>
       <h2>📚 笔记导航</h2>
       <div class="updated">🕓 最后更新时间：{{ site.time | date: "%Y-%m-%d %H:%M" }}</div>
-      <a href="{{ '/' | relative_url }}" class="home-link">🏠 返回首页</a>
-
+      <a href="{{ '/' | relative_url }}" class="home-link" title="返回首页">🏠 返回首页</a>
       <ul>
         {% assign pages_sorted = site.pages | sort: "path" %}
         {% for page in pages_sorted %}
           {% unless page.url == "/" %}
             <li>
-              <a href="{{ page.url | relative_url }}">{{ page.title | default: page.basename }}</a>
+              <a href="{{ page.url | relative_url }}">{{ page.basename }}</a>
             </li>
           {% endunless %}
         {% endfor %}
       </ul>
     </nav>
-
     <article>
       {{ content }}
     </article>
   </main>
-
   <footer>
     &copy; {{ site.time | date: "%Y" }} {{ site.author.name | default: "作者" }}. All rights reserved.
   </footer>
