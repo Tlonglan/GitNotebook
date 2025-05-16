@@ -220,8 +220,10 @@
         {% for page in pages_sorted %}
           {% unless page.url == "/" %}
             <li>
-              <!-- 修正：使用basename显示文件名（不含扩展名） -->
-              <a href="{{ page.url | relative_url }}">{{ page.basename | replace: '-', ' ' | capitalize }}</a>
+              <!-- 使用path提取文件名并移除扩展名 -->
+              {% assign filename = page.path | split: '/' | last %}
+              {% assign filename_without_ext = filename | split: '.' | first %}
+              <a href="{{ page.url | relative_url }}">{{ filename_without_ext | replace: '-', ' ' | capitalize }}</a>
             </li>
           {% endunless %}
         {% endfor %}
