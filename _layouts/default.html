@@ -1,133 +1,89 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{ page.title }} - {{ site.title }}</title>
+  <meta charset="UTF-8">
+  <title>{{ page.title | default: site.title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* 明亮科技蓝色风格 */
     body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 0 1.5rem 3rem 1.5rem;
-      line-height: 1.6;
-      color: #0f172a; /* 深蓝文字 */
-      background-color: #e0f2ff; /* 浅蓝背景 */
-      position: relative;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      display: flex;
     }
-    a {
-      color: #0ea5e9; /* 明亮蓝 */
+    header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #007acc;
+      color: white;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+    main {
+      flex: 1;
+      padding: 5rem 2rem 2rem 2rem;
+      background-color: #fff;
+      min-height: 100vh;
+    }
+    nav {
+      width: 250px;
+      background-color: #f7f9fc;
+      border-left: 1px solid #e1e4e8;
+      padding: 5rem 1rem 1rem 1rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    nav h2 {
+      font-size: 1.2rem;
+      margin-top: 0;
+      color: #0366d6;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    nav li {
+      margin: 0.5rem 0;
+    }
+    nav a {
+      color: #0366d6;
       text-decoration: none;
     }
-    a:hover {
+    nav a:hover {
       text-decoration: underline;
     }
-
-    /* 顶部科技蓝色banner */
-    header {
-      background-color: #0284c7; /* 经典科技蓝 */
-      color: white;
-      padding: 1.2rem 2rem;
-      border-radius: 8px;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 4px 8px rgba(2, 132, 199, 0.4);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    header h1 {
-      margin: 0 0 0.3rem 0;
-      font-weight: 700;
-      font-size: 2rem;
-      user-select: none;
-    }
-    header p {
-      margin: 0;
-      font-size: 1.1rem;
-      font-weight: 500;
-      user-select: none;
-    }
-
-    /* 目录导航栏 */
-    nav#toc {
-      background-color: #bae6fd;
-      border-radius: 8px;
-      padding: 1rem 1.5rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);
-      font-size: 1rem;
-      color: #0369a1;
-    }
-    nav#toc a {
-      color: #0c4a6e;
-      margin-right: 1rem;
-      font-weight: 600;
-    }
-    nav#toc a:hover {
-      color: #0284c7;
-      text-decoration: underline;
-    }
-
-    /* 主体内容区纯白背景 */
-    main {
-      background-color: white; /* 纯白 */
-      padding: 1.5rem 2rem;
-      border-radius: 8px;
-      /* 去掉辉光阴影 */
-      box-shadow: none;
-      color: #0f172a;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 3rem;
-      color: #0284c7;
-      font-size: 0.9rem;
-      user-select: none;
-    }
-
-    /* 右上角的更新时间 */
-    #update-time {
-      position: fixed;
-      top: 1rem;
-      right: 1.5rem;
-      font-size: 0.85rem;
-      color: #0369a1;
-      font-weight: 600;
-      background: #bae6fd;
-      padding: 4px 10px;
-      border-radius: 6px;
-      user-select: none;
-      z-index: 9999;
-      box-shadow: 0 0 8px #38bdf8bb;
+    .last-updated {
+      position: absolute;
+      right: 1rem;
+      top: 1.25rem;
+      font-size: 0.8rem;
+      color: #e0e0e0;
     }
   </style>
 </head>
 <body>
-
-  <div id="update-time">
-    最后更新时间：{{ site.time | date: "%Y-%m-%d %H:%M" }}
-  </div>
-
   <header>
-    <h1>{{ site.title }}</h1>
-    <p>{{ site.description }}</p>
+    <div>{{ site.title }}</div>
+    <div class="last-updated">最后更新时间：{{ site.time | date: "%Y-%m-%d %H:%M" }}</div>
   </header>
-
-  <nav id="toc">
-    <a href="/">首页</a>
-    <a href="/笔记库/心理笔记">心理笔记</a>
-    <a href="/笔记库/物理笔记">物理笔记</a>
-  </nav>
 
   <main>
     {{ content }}
   </main>
 
-  <footer>
-    作者：{{ site.author.name }} | 邮箱：{{ site.author.email }}
-  </footer>
-
+  <nav>
+    <h2>📘 笔记导航</h2>
+    <ul>
+      {% for page in site.pages %}
+        {% if page.path contains '笔记库/' and page.name != 'index.md' %}
+          <li><a href="{{ page.url }}">{{ page.title | default: page.name | split: '.' | first }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </nav>
 </body>
 </html>
