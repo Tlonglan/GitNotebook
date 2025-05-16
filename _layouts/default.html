@@ -220,8 +220,8 @@
         {% for page in pages_sorted %}
           {% unless page.url == "/" %}
             <li>
-              <!-- 使用文件基本名（不含扩展名） -->
-              <a href="{{ page.url | relative_url }}">{{ page.basename }}</a>
+              <!-- 修正：使用basename显示文件名（不含扩展名） -->
+              <a href="{{ page.url | relative_url }}">{{ page.basename | replace: '-', ' ' | capitalize }}</a>
             </li>
           {% endunless %}
         {% endfor %}
