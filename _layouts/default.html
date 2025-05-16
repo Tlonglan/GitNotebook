@@ -5,19 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{ page.title }} | {{ site.title }}</title>
 
-  <!-- GitHub Markdown CSS -->
+  <!-- GitHub Markdown 样式，保证文章内容渲染风格统一 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css" />
 
-  <!-- Prism.js 语法高亮 CSS -->
+  <!-- Prism.js 语法高亮 CSS，使用暗色主题 -->
   <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 
   <style>
+    /* 整体页面基础样式 */
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f5f7fa;
       color: #333;
     }
+
+    /* 顶部 banner，蓝色渐变背景，标题居中 */
     header {
       background: linear-gradient(90deg, #00497a, #0066cc, #3399ff);
       color: white;
@@ -26,7 +29,10 @@
       font-weight: bold;
       text-align: center;
       position: relative;
+      user-select: none; /* 防止选中标题 */
     }
+
+    /* banner 下方的站点描述，浅蓝色文字 */
     header .site-description {
       font-size: 1.2rem;
       font-weight: normal;
@@ -34,6 +40,8 @@
       color: #cce6ff;
       user-select: none;
     }
+
+    /* 页面主体容器，使用 Flexbox 使导航和内容并排 */
     main {
       display: flex;
       max-width: 1200px;
@@ -41,26 +49,32 @@
       padding: 1rem;
       gap: 2rem;
     }
+
+    /* 侧边导航栏样式 */
     nav {
-      width: 280px;
+      width: 280px; /* 固定宽度 */
       flex-shrink: 0;
       background: white;
       border-radius: 0.5rem;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       padding: 1rem;
-      height: 80vh;
+      height: 80vh; /* 侧边栏高度，允许滚动 */
       overflow-y: auto;
       display: flex;
       flex-direction: column;
+      user-select: none; /* 防止误选导航文本 */
     }
+
+    /* 导航标题“笔记导航”样式 */
     nav h2 {
       font-size: 1.3rem;
       margin-bottom: 0.25rem;
       border-bottom: 2px solid #007acc;
       padding-bottom: 0.3rem;
       color: #007acc;
-      user-select: none;
     }
+
+    /* 最后更新时间样式，左对齐，灰色文字 */
     nav .updated {
       font-size: 0.9rem;
       color: #555;
@@ -69,39 +83,47 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      user-select: none;
     }
+
+    /* 首页按钮，短宽高比例，深蓝背景，圆角 */
     nav .home-link {
       display: inline-block;
       margin-bottom: 0.8rem;
       background-color: #004a80;
       color: white !important;
-      padding: 0.3rem 0.6rem;
+      padding: 0.25rem 0.5rem;   /* 控制按钮大小 */
       border-radius: 0.3rem;
       font-weight: bold;
       text-decoration: none;
       transition: background-color 0.3s;
-      user-select: none;
+      font-size: 0.95rem;
+      line-height: 1.3;
       width: auto;
       height: auto;
-      line-height: 1.4;
-      font-size: 1rem;
+      user-select: none;
     }
+    /* 首页按钮悬停效果 */
     nav .home-link:hover {
       background-color: #003366;
       color: white !important;
       text-decoration: none;
     }
+
+    /* 导航目录列表，去掉默认列表样式 */
     nav ul {
       list-style: none;
       padding-left: 0;
       margin: 0;
       flex-grow: 1;
-      overflow-y: auto;
+      overflow-y: auto; /* 目录过长时可滚动 */
     }
+
+    /* 目录每项间距 */
     nav li {
       margin: 0.3rem 0;
     }
+
+    /* 目录链接样式，蓝色文本，无下划线 */
     nav li a {
       color: #007acc;
       text-decoration: none;
@@ -109,9 +131,13 @@
       display: inline-block;
       padding-left: 0;
     }
+
+    /* 目录链接悬停显示下划线 */
     nav li a:hover {
       text-decoration: underline;
     }
+
+    /* 文章内容区域样式，白底，圆角，阴影 */
     article {
       flex: 1;
       background: white;
@@ -120,56 +146,75 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       min-width: 0;
     }
-    /* 代码块和内联代码样式，配合 Prism */
+
+    /* 代码块和内联代码样式，配合 Prism 语法高亮 */
+
+    /* 代码块整体样式 */
     pre[class*="language-"] {
       margin: 1rem 0;
       padding: 1rem;
       overflow: auto;
       border-radius: 0.5rem;
       font-size: 0.9rem;
-      background: #1e1e1e; /* 更深色背景 */
-      color: #d4d4d4; /* 更亮字体颜色 */
+      background: #1e1e1e !important; /* 深色背景，强制覆盖 */
+      color: #d4d4d4 !important;      /* 浅灰字体色，强制覆盖 */
     }
+
+    /* 代码块中的代码字体 */
     code[class*="language-"],
     pre[class*="language-"] code {
       font-family: 'Fira Code', Consolas, Monaco, 'Courier New', monospace;
       font-size: 0.9rem;
       line-height: 1.5;
-      color: #d4d4d4;
+      color: #d4d4d4 !important;     /* 浅灰字体色，强制覆盖 */
     }
-    /* 内联代码 */
+
+    /* 内联代码样式 */
     code {
       background: #f6f8fa;
       border-radius: 0.3rem;
       padding: 0.2em 0.4em;
       font-size: 0.9em;
     }
+
+    /* 页脚样式 */
     footer {
       text-align: center;
       font-size: 0.9rem;
       color: #777;
       margin: 2rem 0 1rem;
+      user-select: none;
     }
   </style>
 </head>
 <body>
+  <!-- 顶部站点标题 -->
   <header>
     {{ site.title }}
     {% if site.description %}
+      <!-- 站点描述，显示在标题下方 -->
       <div class="site-description">{{ site.description }}</div>
     {% endif %}
   </header>
 
   <main>
+    <!-- 侧边导航栏 -->
     <nav>
       <h2>📚 笔记导航</h2>
+
+      <!-- 最后更新时间 -->
       <div class="updated">🕓 最后更新时间：{{ site.time | date: "%Y-%m-%d %H:%M" }}</div>
+
+      <!-- 返回首页按钮 -->
       <a href="{{ '/' | relative_url }}" class="home-link" title="返回首页">🏠 首页</a>
+
+      <!-- 自动生成的导航目录，显示所有页面标题，排除首页 -->
       <ul>
         {% assign pages_sorted = site.pages | sort: "path" %}
         {% for page in pages_sorted %}
           {% unless page.url == "/" %}
             <li>
+              <!-- 使用页面标题，若无则显示文件名 -->
               <a href="{{ page.url | relative_url }}">{{ page.title | default: page.basename }}</a>
             </li>
           {% endunless %}
@@ -177,16 +222,18 @@
       </ul>
     </nav>
 
+    <!-- 文章主体内容，渲染 Markdown -->
     <article class="markdown-body">
       {{ content }}
     </article>
   </main>
 
+  <!-- 页脚版权信息 -->
   <footer>
     &copy; {{ site.time | date: "%Y" }} {{ site.author.name | default: "作者" }}. All rights reserved.
   </footer>
 
-  <!-- Prism.js 语法高亮 JS -->
+  <!-- Prism.js 语法高亮 JS 核心和自动加载组件 -->
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
