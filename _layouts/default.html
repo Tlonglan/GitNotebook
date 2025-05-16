@@ -115,32 +115,81 @@
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     }
 
-    /* 导航目录列表，去掉默认列表样式 */
+    /* 导航目录列表样式 */
     nav ul {
       list-style: none;
       padding-left: 0;
       margin: 0;
-      flex-grow: 1;
-      overflow-y: auto; /* 目录过长时可滚动 */
     }
 
-    /* 目录每项间距 */
-    nav li {
+    /* 一级目录样式 */
+    nav .nav-item {
       margin: 0.3rem 0;
     }
 
-    /* 目录链接样式，蓝色文本，无下划线 */
-    nav li a {
+    /* 一级目录链接样式 */
+    nav .nav-item > a {
       color: #007acc;
       text-decoration: none;
       font-size: 1rem;
-      display: inline-block;
-      padding-left: 0;
+      display: flex;
+      align-items: center;
+      padding: 0.3rem 0;
+      font-weight: 500;
     }
 
-    /* 目录链接悬停显示下划线 */
-    nav li a:hover {
+    /* 有子菜单的一级目录样式 */
+    nav .nav-item.has-children > a {
+      cursor: pointer;
+    }
+
+    /* 折叠/展开按钮样式 */
+    nav .nav-item.has-children > a::before {
+      content: '▶';
+      display: inline-block;
+      margin-right: 0.5rem;
+      font-size: 0.7rem;
+      transition: transform 0.3s ease;
+      color: #888;
+    }
+
+    /* 展开状态的折叠/展开按钮样式 */
+    nav .nav-item.expanded > a::before {
+      transform: rotate(90deg);
+    }
+
+    /* 二级目录容器样式 */
+    nav .sub-nav {
+      padding-left: 1.5rem;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.3s ease-out;
+    }
+
+    /* 展开状态的二级目录样式 */
+    nav .nav-item.expanded .sub-nav {
+      max-height: 1000px;
+      transition: max-height 0.5s ease-in;
+    }
+
+    /* 二级目录链接样式 */
+    nav .sub-nav a {
+      color: #555;
+      text-decoration: none;
+      font-size: 0.95rem;
+      display: block;
+      padding: 0.2rem 0;
+    }
+
+    /* 目录链接悬停效果 */
+    nav a:hover {
       text-decoration: underline;
+    }
+
+    /* 当前页面高亮 */
+    nav a.active {
+      color: #005580;
+      font-weight: 600;
     }
 
     /* 文章内容区域样式，白底，圆角，阴影 */
@@ -211,12 +260,16 @@
       <!-- 最后更新时间 -->
       <div class="updated">🕓 最后更新时间：{{ site.time | date: "%Y-%m-%d %H:%M" }}</div>
 
-      <!-- 返回首页按钮 -->
+      <!-- 返回首页按钮，居左对齐 -->
       <a href="{{ '/' | relative_url }}" class="home-link" title="返回首页">🏠 首页</a>
 
-      <!-- 改进的导航目录生成，只显示有内容的页面 -->
-      <ul>
+      <!-- 基于文件路径的导航目录生成，支持二级目录和折叠功能 -->
+      <ul id="site-nav">
         {% assign pages_sorted = site.pages | sort: "path" %}
+        {% assign root_pages = "" | split: "," %}
+        {% assign dirs = "" | split: "," %}
+        
+        <!-- 收集根目录页面和目录 -->
         {% for page in pages_sorted %}
           {% assign ext = page.path | split: '.' | last | downcase %}
           {% assign is_static_resource = false %}
@@ -227,12 +280,63 @@
             {% assign is_static_resource = true %}
           {% endif %}
           
-          <!-- 显示有内容的页面，排除静态资源和首页 -->
+          <!-- 收集根目录页面和目录 -->
           {% if page.content.size > 10 and is_static_resource == false and page.url != "/" %}
-            <li>
-              {% assign filename = page.path | split: '/' | last %}
-              {% assign filename_without_ext = filename | split: '.' | first %}
-              <a href="{{ page.url | relative_url }}">{{ filename_without_ext | replace: '-', ' ' | capitalize }}</a>
+            {% assign parts = page.path | split: '/' %}
+            {% if parts.size == 1 %}
+              <!-- 根目录页面 -->
+              {% assign root_pages = root_pages | push: page %}
+            {% else %}
+              <!-- 子目录 -->
+              {% assign dir = parts[0] %}
+              {% unless dirs contains dir %}
+                {% assign dirs = dirs | push: dir %}
+              {% endunless %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        
+        <!-- 生成根目录页面 -->
+        {% for page in root_pages %}
+          <li class="nav-item">
+            <a href="{{ page.url | relative_url }}" class="{% if page.url == page.url %}active{% endif %}">
+              {{ page.title | default: page.name | replace: '.md', '' | replace: '-', ' ' | capitalize }}
+            </a>
+          </li>
+        {% endfor %}
+        
+        <!-- 生成目录导航 -->
+        {% for dir in dirs %}
+          {% assign dir_pages = pages_sorted | where_exp: "page", "page.path contains dir" | where_exp: "page", "page.path != dir" %}
+          {% assign has_pages = false %}
+          
+          <!-- 检查目录下是否有页面 -->
+          {% for page in dir_pages %}
+            {% assign parts = page.path | split: '/' %}
+            {% if parts.size == 2 %}
+              {% assign has_pages = true %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+          
+          <!-- 如果目录下有页面，则生成导航项 -->
+          {% if has_pages %}
+            <li class="nav-item has-children {% if page.url contains dir %}expanded{% endif %}">
+              <a href="#" class="{% if page.url contains dir %}active{% endif %}">
+                {{ dir | replace: '-', ' ' | capitalize }}
+              </a>
+              <ul class="sub-nav">
+                {% for page in dir_pages %}
+                  {% assign parts = page.path | split: '/' %}
+                  {% if parts.size == 2 %}
+                    <li>
+                      <a href="{{ page.url | relative_url }}" class="{% if page.url == page.url %}active{% endif %}">
+                        {{ page.title | default: parts[1] | replace: '.md', '' | replace: '-', ' ' | capitalize }}
+                      </a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
             </li>
           {% endif %}
         {% endfor %}
@@ -253,5 +357,51 @@
   <!-- Prism.js 语法高亮 JS 核心和自动加载组件 -->
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  <!-- 导航折叠功能 JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 获取所有有子菜单的导航项
+      const navItems = document.querySelectorAll('.nav-item.has-children');
+      
+      // 为每个有子菜单的导航项添加点击事件
+      navItems.forEach(item => {
+        const link = item.querySelector('a');
+        
+        // 阻止一级目录链接的默认行为，改为折叠/展开子菜单
+        link.addEventListener('click', function(e) {
+          // 如果点击的是当前页面的链接，不阻止默认行为
+          if (!this.classList.contains('active')) {
+            e.preventDefault();
+          }
+          
+          // 切换折叠状态
+          item.classList.toggle('expanded');
+        });
+      });
+      
+      // 高亮当前页面
+      const currentPath = window.location.pathname;
+      const links = document.querySelectorAll('#site-nav a');
+      
+      links.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+          link.classList.add('active');
+          
+          // 展开当前页面所在的父菜单
+          const parentItem = link.closest('.nav-item');
+          if (parentItem) {
+            parentItem.classList.add('expanded');
+            
+            // 如果有祖父菜单，也展开
+            const grandparentItem = parentItem.closest('.sub-nav')?.parentElement;
+            if (grandparentItem && grandparentItem.classList.contains('nav-item')) {
+              grandparentItem.classList.add('expanded');
+            }
+          }
+        }
+      });
+    });
+  </script>
 </body>
 </html>
