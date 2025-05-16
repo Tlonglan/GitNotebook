@@ -91,7 +91,7 @@
       <div class="updated">🕓 最后更新时间：{{ site.time | date: "%Y-%m-%d %H:%M" }}</div>
       <h2>📚 笔记导航</h2>
       <ul>
-        {% assign notes = site.pages | where_exp: "p", "p.path contains '_mynotes/笔记库/'" %}
+        {% assign notes = site.pages | where_exp: "p", "p.path contains '笔记库/'" %}
         {% for note in notes %}
           <li><a href="{{ note.url }}">{{ note.title | default: note.name | split: '.' | first }}</a></li>
         {% endfor %}
