@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{ page.title }} | {{ site.title }}</title>
   <style>
     body {
@@ -11,69 +11,70 @@
       background-color: #f5f7fa;
       color: #333;
     }
-
     header {
-      background-color: #007acc; /* 固定为科技蓝 */
+      background-color: #007acc; /* 科技蓝 */
       color: white;
-      padding: 2rem 1rem;
-      font-size: 2.5rem;
+      padding: 2.5rem 1rem;
+      font-size: 3rem;
       font-weight: bold;
       text-align: center;
       position: relative;
     }
-
     main {
       display: flex;
       flex-direction: row-reverse; /* 右侧导航 */
-      padding: 1rem;
       max-width: 1200px;
       margin: 0 auto;
+      padding: 1rem;
+      gap: 2rem;
     }
-
     nav {
-      width: 250px;
-      margin-left: 2rem;
+      width: 280px;
+      flex-shrink: 0;
     }
-
-    nav h2 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      border-bottom: 2px solid #007acc;
-      padding-bottom: 0.3rem;
-    }
-
     nav .updated {
       font-size: 0.9rem;
       color: #555;
       margin-bottom: 1rem;
+      text-align: right;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-
+    nav h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      border-bottom: 2px solid #007acc;
+      padding-bottom: 0.3rem;
+    }
     nav ul {
       list-style: none;
-      padding: 0;
+      padding-left: 0;
+      max-height: 70vh;
+      overflow-y: auto;
+      margin: 0;
     }
-
     nav li {
-      margin: 0.5rem 0;
+      margin: 0.3rem 0;
+      /* 支持多级目录缩进 */
+      padding-left: calc(1em * (note_level | default: 0));
     }
-
     nav a {
       color: #007acc;
       text-decoration: none;
+      font-size: 1rem;
     }
-
     nav a:hover {
       text-decoration: underline;
     }
-
     article {
       flex: 1;
       background: white;
       padding: 2rem;
       border-radius: 0.5rem;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      min-width: 0;
     }
-
     footer {
       text-align: center;
       font-size: 0.9rem;
@@ -91,9 +92,13 @@
       <div class="updated">🕓 最后更新时间：{{ site.time | date: "%Y-%m-%d %H:%M" }}</div>
       <h2>📚 笔记导航</h2>
       <ul>
-        {% assign notes = site.pages | where_exp: "p", "p.path contains 'MyNote/笔记库/'" %}
+        {% assign notes = site.mynotes | sort: "path" %}
         {% for note in notes %}
-          <li><a href="{{ note.url }}">{{ note.title | default: note.name | split: '.' | first }}</a></li>
+          {% assign parts = note.path | split: "/" %}
+          {% assign level = parts.size | minus: 1 %}
+          <li style="padding-left: {{ level | times: 1 }}em;">
+            <a href="{{ note.url }}">{{ note.title | default: note.basename }}</a>
+          </li>
         {% endfor %}
       </ul>
     </nav>
