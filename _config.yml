@@ -25,6 +25,11 @@ timezone: Asia/Shanghai
 
 # 其他配置
 markdown: kramdown
+collections:
+  mynotes:
+    output: true
+    permalink: /_mynotes/:path/:basename.html
+
 
 # 未来可拓展的配置项
 author:
