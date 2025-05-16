@@ -350,25 +350,30 @@
     &copy; {{ site.time | date: "%Y" }} {{ site.author.name | default: "作者" }}. All rights reserved.
   </footer>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // 高亮代码
+ <script>
+  // 将所有代码放在 window.onload 中确保所有资源加载完成后执行
+  window.onload = function() {
+    // 高亮代码
+    if (typeof hljs !== 'undefined') {
       hljs.highlightAll();
-      
-      // 添加复制按钮
-      addCopyButtons();
-      
-      // 恢复导航状态
-      const savedState = localStorage.getItem('navState');
-      const navState = savedState ? JSON.parse(savedState) : {};
-      
-      const navItems = document.querySelectorAll('.nav-item.has-children');
-      navItems.forEach(item => {
-        const dirName = item.querySelector('a').textContent.trim();
-        if (navState[dirName] === 'expanded') {
-          item.classList.add('expanded');
-        }
-      });
+    } else {
+      console.error('highlight.js 未加载!');
+    }
+    
+    // 添加复制按钮
+    addCopyButtons();
+    
+    // 恢复导航状态
+    const savedState = localStorage.getItem('navState');
+    const navState = savedState ? JSON.parse(savedState) : {};
+    
+    const navItems = document.querySelectorAll('.nav-item.has-children');
+    navItems.forEach(item => {
+      const dirName = item.querySelector('a').textContent.trim();
+      if (navState[dirName] === 'expanded') {
+        item.classList.add('expanded');
+      }
+    });
       
       // 为导航项添加点击事件
       navItems.forEach(item => {
