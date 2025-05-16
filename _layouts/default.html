@@ -24,7 +24,7 @@
 
     main {
       display: flex;
-      flex-direction: row; /* 左侧导航 */
+      flex-direction: row;
       max-width: 1200px;
       margin: 0 auto;
       padding: 1rem;
@@ -48,16 +48,13 @@
       color: #555;
       margin-bottom: 0.5rem;
       text-align: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     nav .home-link {
       display: inline-block;
       margin: 0.5rem 0 1rem;
       font-size: 1rem;
-      background-color: rgba(0, 0, 0, 0.2); /* 加深背景色 */
+      background-color: #005fa3; /* 深蓝背景 */
       color: white;
       text-decoration: none;
       padding: 0.3rem 0.7rem;
@@ -66,7 +63,7 @@
     }
 
     nav .home-link:hover {
-      background-color: rgba(0, 0, 0, 0.35);
+      background-color: #00457a;
     }
 
     nav ul {
@@ -115,15 +112,16 @@
   </header>
   <main>
     <nav>
-      <h2>📚 笔记导航</h2>
+      <h1>笔记导航</h1>
       <div class="updated">🕓 最后更新时间：{{ site.time | date: "%Y-%m-%d %H:%M" }}</div>
       <a href="{{ '/' | relative_url }}" class="home-link" title="返回首页">🏠 返回首页</a>
       <ul>
         {% assign pages_sorted = site.pages | sort: "path" %}
         {% for page in pages_sorted %}
           {% unless page.url == "/" %}
+            {% assign name = page.path | split: '/' | last | split: '.' | first %}
             <li>
-              <a href="{{ page.url | relative_url }}">{{ page.basename }}</a>
+              <a href="{{ page.url | relative_url }}">{{ name }}</a>
             </li>
           {% endunless %}
         {% endfor %}
