@@ -20,13 +20,13 @@ theme: minima  # 默认主题，支持目录和美观样式
 
 # 语言和时区
 language: zh-CN
-timezone: Asia/Beijing
+timezone: Asia/Shanghai
 
 
 # 其他配置
 markdown: kramdown
 
 # 未来可拓展的配置项
-# author:
-#   name: 小蓝
-#   email: your-email@example.com
+author:
+  name: 蓝天龙
+  email: m.lantianlong@qq.com
