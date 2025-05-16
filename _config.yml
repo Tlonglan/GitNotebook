@@ -28,7 +28,7 @@ markdown: kramdown
 collections:
   mynotes:
     output: true
-    permalink: "/mynotes/:path/:basename.html"
+    permalink: /mynotes/:path/:basename.html
 
 
 
