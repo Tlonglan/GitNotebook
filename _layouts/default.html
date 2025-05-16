@@ -214,18 +214,27 @@
       <!-- 返回首页按钮 -->
       <a href="{{ '/' | relative_url }}" class="home-link" title="返回首页">🏠 首页</a>
 
-      <!-- 自动生成的导航目录，显示MD文件的文件名（不含扩展名） -->
+      <!-- 改进的导航目录生成，只显示有内容的页面 -->
       <ul>
         {% assign pages_sorted = site.pages | sort: "path" %}
         {% for page in pages_sorted %}
-          {% unless page.url == "/" %}
+          {% assign ext = page.path | split: '.' | last | downcase %}
+          {% assign is_static_resource = false %}
+          
+          <!-- 定义不需要显示在导航中的文件类型 -->
+          {% assign static_exts = "css,js,json,xml,svg,png,jpg,jpeg,gif,ico,woff,woff2,ttf,eot,map" | split: ',' %}
+          {% if static_exts contains ext %}
+            {% assign is_static_resource = true %}
+          {% endif %}
+          
+          <!-- 显示有内容的页面，排除静态资源和首页 -->
+          {% if page.content.size > 10 and is_static_resource == false and page.url != "/" %}
             <li>
-              <!-- 使用path提取文件名并移除扩展名 -->
               {% assign filename = page.path | split: '/' | last %}
               {% assign filename_without_ext = filename | split: '.' | first %}
               <a href="{{ page.url | relative_url }}">{{ filename_without_ext | replace: '-', ' ' | capitalize }}</a>
             </li>
-          {% endunless %}
+          {% endif %}
         {% endfor %}
       </ul>
     </nav>
