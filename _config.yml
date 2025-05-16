@@ -28,7 +28,8 @@ markdown: kramdown
 collections:
   mynotes:
     output: true
-    permalink: /_mynotes/:path/:basename.html
+    permalink: "/mynotes/:path/:basename.html"
+
 
 
 # 未来可拓展的配置项
