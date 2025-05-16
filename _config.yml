@@ -1,8 +1,8 @@
 # 网站基本信息
 title: 小蓝的笔记本
 description: 我的个人笔记整理站
-url: "https://your-username.github.io"   # 你的网站地址，GitHub Pages 域名或自定义域名
-baseurl: ""                             # 如果是仓库页面，填仓库名，比如 "/repo-name"，否则留空
+# url: "https://your-username.github.io"   # 你的网站地址，GitHub Pages 域名或自定义域名
+# baseurl: ""                             # 如果是仓库页面，填仓库名，比如 "/repo-name"，否则留空
 
 
 # 主题
@@ -20,15 +20,13 @@ theme: minima  # 默认主题，支持目录和美观样式
 
 # 语言和时区
 language: zh-CN
-# timezone: Asia/Beijing
+timezone: Asia/Beijing
 
 
 # 其他配置
 markdown: kramdown
-paginate: 5      # 分页，每页文章数
-paginate_path: "/page:num"
 
 # 未来可拓展的配置项
-author:
-  name: 小蓝
-  email: your-email@example.com
+# author:
+#   name: 小蓝
+#   email: your-email@example.com
