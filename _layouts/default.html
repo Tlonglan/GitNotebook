@@ -296,11 +296,11 @@
           {% endif %}
         {% endfor %}
         
-        <!-- 生成根目录页面，强制使用文件名 -->
+        <!-- 生成根目录页面 -->
         {% for page in root_pages %}
           <li class="nav-item">
             <a href="{{ page.url | relative_url }}" class="{% if page.url == page.url %}active{% endif %}">
-              {{ page.name | replace: '.md', '' | replace: '-', ' ' | capitalize }} <!-- 使用文件名 -->
+              {{ page.title | default: page.name | replace: '.md', '' | replace: '-', ' ' | capitalize }}
             </a>
           </li>
         {% endfor %}
@@ -331,7 +331,7 @@
                   {% if parts.size == 2 %}
                     <li>
                       <a href="{{ page.url | relative_url }}" class="{% if page.url == page.url %}active{% endif %}">
-                        {{ parts[1] | replace: '.md', '' | replace: '-', ' ' | capitalize }} <!-- 使用文件名 -->
+                        {{ page.title | default: parts[1] | replace: '.md', '' | replace: '-', ' ' | capitalize }}
                       </a>
                     </li>
                   {% endif %}
