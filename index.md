@@ -5,7 +5,6 @@ layout: default
 
 
 # 欢迎来到我的笔记主页 ✨
-<small>最后更新时间：{{ site.time | date: "%Y-%m-%d %H:%M" }}</small>
 
 这里是我整理的笔记索引，点击查看详情：
 
