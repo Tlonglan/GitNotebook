@@ -12,7 +12,7 @@ layout: default
 - [心理笔记](笔记库/心理笔记.md)
 
 <ul>
-  <li><a href="笔记库/物理笔记.md">物理笔记</a></li>
+  <li><a href="笔记库/物理笔记">物理笔记</a></li>
 </ul>
 
 ---
