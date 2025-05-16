@@ -296,11 +296,11 @@
           {% endif %}
         {% endfor %}
         
-        <!-- 生成根目录页面 -->
+        <!-- 生成根目录页面，强制使用文件名 -->
         {% for page in root_pages %}
           <li class="nav-item">
             <a href="{{ page.url | relative_url }}" class="{% if page.url == page.url %}active{% endif %}">
-              {{ page.title | default: page.name | replace: '.md', '' | replace: '-', ' ' | capitalize }}
+              {{ page.name | replace: '.md', '' | replace: '-', ' ' | capitalize }} <!-- 强制使用文件名 -->
             </a>
           </li>
         {% endfor %}
@@ -331,7 +331,7 @@
                   {% if parts.size == 2 %}
                     <li>
                       <a href="{{ page.url | relative_url }}" class="{% if page.url == page.url %}active{% endif %}">
-                        {{ page.title | default: parts[1] | replace: '.md', '' | replace: '-', ' ' | capitalize }}
+                        {{ parts[1] | replace: '.md', '' | replace: '-', ' ' | capitalize }} <!-- 强制使用文件名 -->
                       </a>
                     </li>
                   {% endif %}
@@ -415,6 +415,31 @@
           }
         }
       });
+      
+      // 使用Intersection Observer监听导航项，防止闪烁
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // 当导航项进入视口时，延迟一小段时间再恢复状态
+            // 这可以避免页面加载时的闪烁感
+            setTimeout(() => {
+              const navItems = document.querySelectorAll('.nav-item.has-children');
+              navItems.forEach(item => {
+                const dirName = item.querySelector('a').textContent.trim();
+                if (navState[dirName] === 'expanded') {
+                  item.classList.add('expanded');
+                }
+              });
+            }, 50);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      // 开始观察导航容器
+      const navContainer = document.querySelector('nav');
+      if (navContainer) {
+        observer.observe(navContainer);
+      }
     });
     
     // 首页按钮导航函数，保存导航状态
@@ -430,9 +455,83 @@
       
       localStorage.setItem('navState', JSON.stringify(navState));
       
-      // 导航到首页
-      window.location.href = '{{ "/" | relative_url }}';
+      // 使用pushState避免页面刷新，防止闪烁
+      history.pushState(null, null, '{{ "/" | relative_url }}');
+      loadPage('{{ "/" | relative_url }}');
     }
+    
+    // 页面加载函数，使用fetch实现无刷新导航
+    function loadPage(url) {
+      fetch(url)
+        .then(response => response.text())
+        .then(html => {
+          // 提取新页面的内容部分
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const newContent = doc.querySelector('article.markdown-body').innerHTML;
+          
+          // 更新内容部分
+          document.querySelector('article.markdown-body').innerHTML = newContent;
+          
+          // 更新标题
+          document.title = doc.title;
+          
+          // 高亮新页面的导航项
+          const currentPath = window.location.pathname;
+          const links = document.querySelectorAll('#site-nav a');
+          
+          links.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === currentPath) {
+              link.classList.add('active');
+              
+              // 展开当前页面所在的父菜单
+              const parentItem = link.closest('.nav-item');
+              if (parentItem) {
+                parentItem.classList.add('expanded');
+              }
+            }
+          });
+          
+          // 重新高亮代码块
+          Prism.highlightAll();
+        })
+        .catch(error => {
+          console.error('加载页面时出错:', error);
+        });
+    }
+    
+    // 为所有导航链接添加无刷新导航
+    document.addEventListener('click', function(e) {
+      if (e.target.tagName === 'A' && e.target.closest('#site-nav')) {
+        e.preventDefault();
+        const href = e.target.getAttribute('href');
+        
+        if (href && href !== '#') {
+          // 保存当前导航状态
+          const navItems = document.querySelectorAll('.nav-item.has-children');
+          const navState = {};
+          
+          navItems.forEach(item => {
+            const dirName = item.querySelector('a').textContent.trim();
+            navState[dirName] = item.classList.contains('expanded') ? 'expanded' : 'collapsed';
+          });
+          
+          localStorage.setItem('navState', JSON.stringify(navState));
+          
+          // 使用pushState更新URL
+          history.pushState(null, null, href);
+          
+          // 加载新页面
+          loadPage(href);
+        }
+      }
+    });
+    
+    // 处理浏览器前进/后退按钮
+    window.addEventListener('popstate', function() {
+      loadPage(window.location.pathname);
+    });
   </script>
 </body>
 </html>
