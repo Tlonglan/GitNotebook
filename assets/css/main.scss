@@ -1,11 +1,11 @@
 ---
+# 这里可以添加一些元数据，但通常 SCSS 文件不需要
 ---
 
 // 1. 在 :root 中定义全局变量
 :root {
   --primary-color: #2a55e9;
 }
-
 
 // 导入 SCSS 模块
 @import "./callout";

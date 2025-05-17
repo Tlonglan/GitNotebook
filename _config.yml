@@ -30,7 +30,9 @@ markdown: kramdown
     # output: true
     # permalink: /mynotes/:name.html
 
-
+sass:
+  sass_dir: _sass
+  style: compressed
 
 
 # 未来可拓展的配置项
