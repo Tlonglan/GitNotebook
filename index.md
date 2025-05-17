@@ -25,7 +25,7 @@ layout: default
 
 ### 数理模块：
 > [!info]
-> 当然，公式前后必须要有空格，和其他内容分开
+> 公式前后必须要有空格，和其他内容分开（好像 $\KaTeX$ 可以不用？），所以这个站点的所有公式是采用 $\KaTeX$ 引擎渲染
 
 
 $$
@@ -34,7 +34,6 @@ $$
 &F = \frac{\rm{d}p}{\rm{d}t}
 \end{align}
 $$
-
 
 这是没有对齐包的公式块，当然也有 $E = mc^2$ 的行内公式 和`行内代码`
 
@@ -51,13 +50,38 @@ Print[#&@%]
 ```
 
 ### 视频图片模块 
-<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114517585499416&bvid=BV1B3E4zvEhA&cid=29991898241&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
 
-#### 普通md语法
-![这是图床图片](https://pica.zhimg.com/v2-29c64bd652a59a28a8c98952cb25c752_r.jpg)
+<div style="position: relative; padding: 28.1% 45%;">
+  <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=228086186&bvid=BV1ch411L7aL&cid=1111035512&p=1&autoplay=0" frameborder="no" scrolling="no" allowfullscreen="true" sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts" style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;">
+  </iframe>
+</div>
 
 
-#### html语法
-<center class ='img'>
-<img title="图片说明写这里" src="https://pica.zhimg.com/v2-29c64bd652a59a28a8c98952cb25c752_r.jpg" width="50%">
-</center>
+
+- **普通md语法**
+![这是图片注释](https://pica.zhimg.com/v2-29c64bd652a59a28a8c98952cb25c752_r.jpg){: style="width: 60%"}
+
+```html
+<!-- 因为jekyll解析机制，会把md语法解析成下面的格式，
+ 而 alt语法 在静态页面中不显示 -->
+<img 
+    src="https://pica.zhimg.com/v2-29c64bd652a59a28a8c98952cb25c752_r.jpg" 
+    alt="图片描述"
+    width="60%" >
+```
+
+
+- **html语法-没有注释**
+<div style="text-align: center; width: 60%; margin: 0 auto;">
+  <img src="https://pica.zhimg.com/v2-29c64bd652a59a28a8c98952cb25c752_r.jpg">
+</div>
+
+
+- **这是html图文组合，不是md语法**
+<figure style="text-align: center; width: 60%; margin: 0 auto;">
+  <img 
+    src="https://pica.zhimg.com/v2-29c64bd652a59a28a8c98952cb25c752_r.jpg" 
+    alt="图片描述"
+  >
+  <figcaption>图片说明：这是一张示例图片</figcaption>
+</figure>
