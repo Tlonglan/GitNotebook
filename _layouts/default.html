@@ -5,11 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{ page.title }} | {{ site.title }}</title>
 
-  <!-- 自定义类似Obsidian 的 Callout 样式  -->
-  <link rel="stylesheet" href="{{ '/assets/css/main.scss' | relative_url }}">
-
-  <!-- 引入自定义的 mathjax.html，用于渲染数学公式 -->
-  {% include mathjax.html %}
+  <!-- 引入自定义的 katex.html，用于渲染数学公式 -->
+  {% include katex.html %}
 
   <!-- GitHub Markdown 样式，保证文章内容渲染风格统一 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css" />

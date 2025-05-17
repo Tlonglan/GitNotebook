@@ -1,0 +1,30 @@
+<!-- KaTeX 资源 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+<!-- 初始化 KaTeX 自动渲染 -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      // 识别 LaTeX 公式的定界符
+      delimiters: [
+        {left: "$$", right: "$$", display: true},  // 块级公式
+        {left: "$", right: "$", display: false},   // 行内公式
+        {left: "\\[", right: "\\]", display: true},
+        {left: "\\(", right: "\\)", display: false}
+      ],
+      // 配置选项（可选）
+      throwOnError: false,
+      errorColor: "#ff0000",
+      strict: "ignore",  // 宽松模式，忽略格式问题
+      trust: true,       // 信任所有公式内容
+      // 自定义 LaTeX 宏（可选）
+      macros: {
+        "\\R": "\\mathbb{R}",
+        "\\Z": "\\mathbb{Z}",
+        "\\N": "\\mathbb{N}"
+      }
+    });
+  });
+</script>
