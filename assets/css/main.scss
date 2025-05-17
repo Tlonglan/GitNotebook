@@ -1,3 +1,11 @@
+---
+---
+
+// 1. 在 :root 中定义全局变量
+:root {
+  --primary-color: #2a55e9;
+}
 
 
-@import "callout";
+// 导入 SCSS 模块
+@import "./callout";
