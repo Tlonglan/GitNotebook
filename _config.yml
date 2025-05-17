@@ -17,6 +17,25 @@ description: 总会有些意想不到的东西
 # - jekyll-remote-theme # add this line to the plugins list if you already have one
 
 
+theme: jekyll-theme-primer
+plugins:
+  - jekyll-optional-front-matter  # 允许无front-matter的文件
+
+
+# 重要配置项
+permalink: pretty
+include:
+  - "_pages"
+  - "笔记库/**/*"  # 包含所有深层Markdown文件
+  
+# KaTeX配置标记（可选）
+katex:
+  css: https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css
+  js: 
+    - https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js
+    - https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js
+
+
 
 # 语言和时区
 locale: zh-CN
@@ -29,6 +48,9 @@ markdown: kramdown
   # mynotes:
     # output: true
     # permalink: /mynotes/:name.html
+highlighter: rouge
+encoding: utf-8
+
 
 sass:
   sass_dir: _sass

@@ -1,0 +1,39 @@
+<!-- _includes/nav_builder.html -->
+{% assign pages = include.pages %}
+{% assign root_nodes = "" | split: "," %}
+
+{% for page in pages %}
+  {% assign parts = page.url | split: "/" %}
+  {% assign parts = parts | pop %}
+  
+  <!-- 关键修改：url进行URI编码 -->
+  {% assign page_url = page.url | uri_escape %}
+  
+  {% assign current_level = root_nodes %}
+  {% for part in parts %}
+    {% assign node_name = part | default: "root" %}
+    {% assign existing_node = current_level | where: "name", node_name | first %}
+    
+    {% unless existing_node %}
+      {% capture new_node %}
+        {
+          "name": {{ part | jsonify }},
+          "title": {{ part | replace: '-', ' ' | capitalize | jsonify }},
+          "url": {{ page_url | jsonify }},
+          "children": []
+        }
+      {% endcapture %}
+      {% assign new_node = new_node | strip_newlines | parse_json %}
+      {% assign current_level = current_level | push: new_node %}
+      {% assign current_level = new_node.children %}
+    {% else %}
+      {% assign current_level = existing_node.children %}
+    {% endunless %}
+  {% endfor %}
+{% endfor %}
+
+<script>
+// 最终安全输出
+// 开发环境显示[]，构建后自动替换为真实数据
+window.navTree = {{ root_nodes | jsonify | safe }}
+</script>
