@@ -344,67 +344,82 @@
   </div>
   
   <!-- 脚本 -->
-  <script>
-    // 加载KaTeX脚本
-    function loadScript(url, callback) {
-      const script = document.createElement('script');
-      script.src = url;
-      script.onload = callback;
-      script.onerror = function() {
-        console.error(`Failed to load script: ${url}`);
-      };
-      document.body.appendChild(script);
-    }
+<script>
+    function loadScript(url, callback) { /* ... */ } // 保持不变
     
-    // 等待DOM加载完成
+    function reRenderMath() { /* 新增公式重渲染函数 */
+      if (typeof renderMathInElement !== 'undefined') {
+        renderMathInElement(document.body, {
+          delimiters: [/* ... */],
+          throwOnError: false
+        });
+      }
+    }
+
+    function loadPage(url) { /* 修改后的加载函数 */
+      fetch(url)
+        .then(response => response.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const newContent = doc.querySelector('article.markdown-body').innerHTML;
+          
+          document.querySelector('article.markdown-body').innerHTML = newContent;
+          reRenderMath(); // 关键：跳转后重渲染公式
+          
+          document.title = doc.title;
+          const currentPath = window.location.pathname;
+          const links = document.querySelectorAll('#site-nav a');
+          
+          links.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === currentPath) {
+              link.classList.add('active');
+              let parentItem = link.closest('.nav-item');
+              while (parentItem && parentItem.closest('.has-children')) {
+                parentItem = parentItem.closest('.has-children');
+                parentItem.classList.add('expanded');
+              }
+            }
+          });
+          Prism.highlightAll(); // 如需代码高亮，保留此句
+        })
+        .catch(error => console.error('加载页面出错:', error));
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-      // 导航菜单折叠/展开功能
+      // 导航折叠逻辑不变
       const navItems = document.querySelectorAll('.has-children > a');
       navItems.forEach(item => {
         item.addEventListener('click', function(e) {
           e.preventDefault();
-          const parent = this.parentElement;
-          parent.classList.toggle('expanded');
+          this.parentElement.classList.toggle('expanded');
         });
       });
       
-      // 处理当前激活的菜单项
-      const currentPath = window.location.pathname;
-      const links = document.querySelectorAll('#site-nav a');
-      links.forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
-          link.classList.add('active');
-          // 展开父级菜单
-          let parent = link.closest('.has-children');
-          while (parent) {
-            parent.classList.add('expanded');
-            parent = parent.closest('.has-children');
-          }
+      // 初始加载时的公式渲染
+      loadScript('https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js', () => {
+        loadScript('https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js', () => {
+          setTimeout(reRenderMath, 100); // 初始加载时延迟渲染
+        });
+      });
+    });
+
+    // 导航链接点击事件（无刷新跳转）
+    document.addEventListener('click', function(e) {
+      if (e.target.tagName === 'A' && e.target.closest('#site-nav')) {
+        e.preventDefault();
+        const href = e.target.getAttribute('href');
+        if (href && href !== '#') {
+          history.pushState(null, null, href);
+          loadPage(href);
         }
-      });
-      
-      // 加载KaTeX核心库
-      loadScript('https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js', function() {
-        // 加载自动渲染插件
-        loadScript('https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js', function() {
-          // 确保KaTeX完全加载后再渲染公式
-          if (typeof renderMathInElement !== 'undefined') {
-            // 延迟一小段时间，确保DOM完全稳定
-            setTimeout(function() {
-              renderMathInElement(document.body, {
-                delimiters: [
-                  {left: "$$", right: "$$", display: true},
-                  {left: "$", right: "$", display: false},
-                  {left: "\\[", right: "\\]", display: true},
-                  {left: "\\(", right: "\\)", display: false}
-                ],
-                throwOnError: false
-              });
-              console.log("KaTeX formulas rendered successfully.");
-            }, 100);
-          }
-        });
-      });
+      }
+    });
+
+    // 处理浏览器前进/后退
+    window.addEventListener('popstate', () => {
+      loadPage(window.location.pathname);
     });
   </script>
 </body>
