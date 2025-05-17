@@ -25,13 +25,19 @@ layout: default
 
 ### 数理模块：
 $$
-
 \begin{align}
 &\alpha + \beta  = \gamma \\
 &F = \frac{\rm{d}p}{\rm{d}t}
 \end{align}
-
 $$
+
+
+这是没有对齐包的公式块，当然也有 $E = mc^2$ 的行内公式 和`行内代码`
+$$
+F = \frac{\rm{d}p}{\rm{d}t}
+$$
+
+
 
 ```mathematica
 Plot[Sin@x, {x, -Pi, Pi}]
