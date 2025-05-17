@@ -35,5 +35,5 @@
 <script>
 // 最终安全输出
 // 开发环境显示[]，构建后自动替换为真实数据
-window.navTree = {{ root_nodes | jsonify | safe }}
+window.navTree = /*{{ root_nodes | jsonify | safe }}*/ []
 </script>
