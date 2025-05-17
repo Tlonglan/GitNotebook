@@ -24,6 +24,10 @@ layout: default
 
 
 ### 数理模块：
+> [!info]
+> 当然，公式前后必须要有空格，和其他内容分开
+
+
 $$
 \begin{align}
 &\alpha + \beta  = \gamma \\
